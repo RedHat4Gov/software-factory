@@ -1,0 +1,77 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: web-goat-nexus-lifecycle-scan
+spec:
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: 'https://github.com/WebGoat/WebGoat'
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'false'
+        - name: deleteExisting
+          value: 'true'
+        - name: verbose
+          value: 'true'
+        - name: gitInitImage
+          value: >-
+            gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.29.0
+        - name: userHome
+          value: /tekton/home
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: sample-nexus-pipeline-workspace
+    - name: maven
+      params:
+        - name: MAVEN_IMAGE
+          value: >-
+            maven:latest
+        - name: GOALS
+          value:
+            - package
+        - name: PROXY_PROTOCOL
+          value: http
+        - name: CONTEXT_DIR
+          value: .
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: ClusterTask
+        name: maven
+      workspaces:
+        - name: source
+          workspace: sample-nexus-pipeline-workspace
+        - name: maven-settings
+          workspace: sample-nexus-pipeline-workspace
+    - name: nexus-lifecycle-scan-task
+      params:
+        - name: SERVER_URL
+          value: [REPLACE-WITH-NEXUS-IQ_SERVER]
+        - name: AUTHENTICATION
+          value: [USER:PASSWORD]
+        - name: APPLICATION_ID
+          value: webgoat
+        - name: TARGETS
+          value: |
+            /workspace/nexus-cli-workspace/target/webgoat-8.2.3-SNAPSHOT.jar
+      runAfter:
+        - maven
+      taskRef:
+        kind: Task
+        name: nexus-lifecycle-scan-task
+      workspaces:
+        - name: nexus-cli-workspace
+          workspace: sample-nexus-pipeline-workspace
+        - name: output
+          workspace: sample-nexus-pipeline-workspace
+  workspaces:
+    - name: sample-nexus-pipeline-workspace
