@@ -1,3 +1,6 @@
-# Software Factory
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
-Soon to come, awesome content to help you with highly regulated SDLC.
+layout: home
+---
