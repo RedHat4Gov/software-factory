@@ -8,6 +8,8 @@ Visit the [Software Factory](https://redhat4gov.github.io/software-factory/) doc
 
 ### Software Bill of Material
 
+#### Sonatype - Nexus IQ Server - Nexus Lifecycle
+
 First, clone this repo. Then, from a fresh cluster:
 
 1. Install the OpenShift Pipelines Operator into all namespaces
@@ -26,4 +28,3 @@ First, clone this repo. Then, from a fresh cluster:
         1. [USER:PASSWORD] - Use the default of ```admin:admin123```
     1. Invoke the updated pipline CRD ``` oc apply -f components/sonatype/tekton-pipelines-samples/web-goat-pipeline ```
 1. Invoke a pipeline run. Make sure to selevt the VolumeClaimTemplate for the storage option
-
