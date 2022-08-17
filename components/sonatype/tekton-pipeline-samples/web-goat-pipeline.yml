@@ -3,6 +3,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: web-goat-nexus-lifecycle-scan
+  namespace: sonatype
 spec:
   tasks:
     - name: git-clone
