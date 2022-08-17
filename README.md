@@ -22,7 +22,9 @@ First, clone this repo. Then, from a fresh cluster:
     1. Login with default credentials [un: admin, pw: admin123]
     1. Upload the Not For Resale (NFR) License
     1. Create an organization called ```Red Hat```
-    1. Wihtin the Red Hat organiation, create an app called ```webgoat```
+    1. Settings -> Automatic Applications
+        1. Turn on ```Automatic Application Creation``` 
+        1. Select ```Red Hat``` as Parent Organization
 1. Install Tekton task for Nexus IQ Scan ``` oc apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/nexus-lifecycle-scan/0.1/nexus-lifecycle-scan.yml ```
 1. Install WebGoat Sample Pipeline (components/sonatype/tekton-pipelines-samples/web-goat-pipeline)
     1. First, the two parameters in the pipeline CRD
